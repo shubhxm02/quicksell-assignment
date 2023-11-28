@@ -3,8 +3,15 @@ import { MdTune } from "react-icons/md";
 import { LuChevronDown } from "react-icons/lu";
 import "./header.css";
 
-function Header() {
-  const [visible, setVisible] = useState<boolean>(true);
+interface HeaderProps {
+  grouping: string;
+  ordering: string;
+  setGrouping: (grouping: string) => void;
+  setOrdering: (ordering: string) => void;
+}
+
+function Header({ grouping, ordering, setGrouping, setOrdering }: HeaderProps) {
+  const [visible, setVisible] = useState<boolean>(false);
 
   return (
     <header>
@@ -23,8 +30,8 @@ function Header() {
             <select
               name="grouping"
               id="grouping"
-              // value={grouping}
-              // onChange={onGroupingChange}
+              value={grouping}
+              onChange={(e) => setGrouping(e.target.value)}
             >
               <option value="status">Status</option>
               <option value="user">User</option>
@@ -36,8 +43,8 @@ function Header() {
             <select
               name="ordering"
               id="ordering"
-              // value={ordering}
-              // onChange={onOrderingChange}
+              value={ordering}
+              onChange={(e) => setOrdering(e.target.value)}
             >
               <option value="priority">Priority</option>
               <option value="title">Title</option>

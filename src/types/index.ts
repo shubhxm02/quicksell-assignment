@@ -12,3 +12,11 @@ export type User = {
   name: string;
   available: boolean;
 };
+
+export type Col = {
+  col: Ticket[];
+};
+
+export type UserIdToData = {
+  userData: Record<string, User>;
+};

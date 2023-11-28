@@ -5,13 +5,16 @@ import Header from "./components/Header";
 import Board from "./components/Board";
 import { Ticket, User } from "./types";
 import { getLocalStorageItem, setLocalStorageItem } from "./utils";
+import { loadGrid, mapUsersByUserId } from "./utils/board";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<Record<string, User>>({});
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
   const [grouping, setGrouping] = useState<string>("status");
   const [ordering, setOrdering] = useState<string>("priority");
+
+  const [gridData, setGridData] = useState<Record<string, Ticket[]>>({});
 
   const loadSettings = () => {
     setGrouping(getLocalStorageItem("grouping") || "status");
@@ -35,10 +38,15 @@ function App() {
       .then((res) => {
         const { tickets, users } = res;
         setTickets(tickets);
-        setUsers(users);
+        setUsers(mapUsersByUserId(users));
       })
       .catch((err) => {});
   }, []);
+
+  useEffect(() => {
+    if (!tickets.length) return;
+    setGridData(loadGrid(tickets, grouping, ordering));
+  }, [grouping, ordering, tickets]);
 
   return (
     <div className="App">
@@ -48,7 +56,7 @@ function App() {
         setGrouping={saveGrouping}
         setOrdering={saveOrdering}
       />
-      <Board />
+      <Board gridData={gridData} grouping={grouping} userIdToData={users} />
     </div>
   );
 }

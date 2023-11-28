@@ -1,7 +1,7 @@
 .card {
   /* width: inherit; */
-  width: max-content;
-  max-width: 18rem;
+  width: full;
+  /* max-width: 18rem; */
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
   box-shadow: 0 0 0.5rem #12121221;

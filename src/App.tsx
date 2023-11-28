@@ -6,6 +6,7 @@ import Board from "./components/Board";
 import { Ticket, User } from "./types";
 import { getLocalStorageItem, setLocalStorageItem } from "./utils";
 import { loadGrid, mapUsersByUserId } from "./utils/board";
+import { LuLoader2 } from "react-icons/lu";
 
 function App() {
   const [users, setUsers] = useState<Record<string, User>>({});
@@ -15,6 +16,8 @@ function App() {
   const [ordering, setOrdering] = useState<string>("priority");
 
   const [gridData, setGridData] = useState<Record<string, Ticket[]>>({});
+
+  const [loading, setLoading] = useState<boolean>(true);
 
   const loadSettings = () => {
     setGrouping(getLocalStorageItem("grouping") || "status");
@@ -44,8 +47,10 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     if (!tickets.length) return;
     setGridData(loadGrid(tickets, grouping, ordering));
+    setLoading(false);
   }, [grouping, ordering, tickets]);
 
   return (
@@ -56,7 +61,14 @@ function App() {
         setGrouping={saveGrouping}
         setOrdering={saveOrdering}
       />
-      <Board gridData={gridData} grouping={grouping} userIdToData={users} />
+      {loading ? (
+        <div className="loading-container">
+          <LuLoader2 color="#797d84" size={24} className="loading-icon" />
+          Loading...
+        </div>
+      ) : (
+        <Board gridData={gridData} grouping={grouping} userIdToData={users} />
+      )}
     </div>
   );
 }

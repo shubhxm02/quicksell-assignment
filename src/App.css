@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.loading-container {
+  height: calc(100vh - 6rem);
+  display: flex;
+  background-color: #f4f5f8;
+  place-items: center;
+  justify-content: center;
+}
+
+.loading-icon {
+  padding: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
